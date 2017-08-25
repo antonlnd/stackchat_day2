@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { writeChannelName, postChannel } from '../store';
 
 /** Write your `connect` component below! **/
-const mapStateToProps = function (state) {
+const mapStateToProps = function (state, ownProps) {
   return {
     newChannelEntry: state.newChannelEntry
   };
@@ -11,12 +11,15 @@ const mapStateToProps = function (state) {
 const mapDispatchToProps = function (dispatch, ownProps) {
   return {
     handleChange (evt) {
+      // console.log(evt.target.value + "--------------------")
       dispatch(writeChannelName(evt.target.value));
     },
     handleSubmit (evt) {
       evt.preventDefault();
-      const name = evt.target.newChannelEntry.value;
-      dispatch(postChannel({ name }));  // this is ES6 object destructuring! It's equivalent to { name: name }
+      const name = evt.target.channelName.value;
+      // console.log(ownProps, evt.target.value + '-----------------------------------')     
+      console.log(ownProps);
+      dispatch(postChannel( {name} , ownProps.history ));  // this is ES6 object destructuring! It's equivalent to { name: name }
     }
   };
 }
@@ -27,12 +30,13 @@ export function NewChannelEntry (props) {
     <form onSubmit={props.handleSubmit}>
       <div className="form-group">
         <label htmlFor="name">Create a Channel</label>
-        <input value={props.newChannelEntry}
+        <input 
           onChange={props.handleChange}
           className="form-control"
           type="text"
-          name="name"
+          name="channelName"
           placeholder="Enter channel name"
+          value={props.newChannelEntry}
         />
       </div>
       <div className="form-group">

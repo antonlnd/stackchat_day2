@@ -102,13 +102,15 @@ export function fetchChannels () {
   }
 }
 
-export function postChannel (channel) { // expecting channel to an object like: { name: 'new_channel_name' }
+export function postChannel (channel, history) { // expecting channel to an object like: 
 
   return function thunk (dispatch) {
     return axios.post('/api/channels', channel)
       .then(function (res) { return res.data })
       .then(function (newChannel) {
         dispatch(getChannel(newChannel));
+        console.log('at postChannel Dispatch -0-000000')
+        history.push(`/channels/${newChannel.id}`);
         socket.emit('new-channel', newChannel);
       });
   };
