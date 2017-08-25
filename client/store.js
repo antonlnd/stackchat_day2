@@ -11,7 +11,8 @@ const initialState = {
   messages: [],
   name: 'Reggie',
   newMessageEntry: '',
-  channels: []
+  channels: [],
+  newChannelEntry: ''
 };
 
 // ACTION TYPES
@@ -108,6 +109,7 @@ export function postChannel (channel) { // expecting channel to an object like: 
       .then(function (res) { return res.data })
       .then(function (newChannel) {
         dispatch(getChannel(newChannel));
+        socket.emit('new-channel', newChannel);
       });
   };
 }
